@@ -1,0 +1,229 @@
+# vim: filetype=i3:
+# i3 config file (v4)
+# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+
+# Set modifier key
+set $mod Mod4
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Font for window titles. Will also be used by the bar by default
+font pango:Inconsolata for Powerline 10
+
+### MODES
+# resize window
+mode "resize window" {
+  bindsym h resize shrink width   50 px
+  bindsym j resize grow   height  50 px
+  bindsym k resize shrink height  50 px
+  bindsym l resize grow   width   50 px
+
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+bindsym $mod+Shift+r mode "resize window"
+
+# move window
+mode "move window" {
+  bindsym h move left  50 px
+  bindsym j move down  50 px
+  bindsym k move up    50 px
+  bindsym l move right 50 px
+
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+bindsym $mod+Shift+m mode "move window"
+
+# exit i3
+mode "Exit: (q)uit, (r)estart, (x)reload" {
+  bindsym q exit
+  bindsym r mode default; restart
+  bindsym x mode default; reload
+
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+bindsym $mod+Control+q mode "Exit: (q)uit, (r)estart, (x)reload"
+
+# launcher
+mode "Launcher: (t)hunar, (f)irefox" {
+  bindsym t mode default; exec "thunar"
+  bindsym f mode default; exec "firefox"
+
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+bindsym $mod+r mode "Launcher: (t)hunar, (f)irefox"
+
+### KEYBINDINGS
+# start a terminal
+bindsym $mod+Return exec gnome-terminal
+
+# kill focused window
+bindsym $mod+Shift+c kill
+
+# start dmenu (a program launcher)
+bindsym $mod+d exec dmenu_run
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# split in horizontal orientation
+bindsym $mod+b split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+x layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+bindsym $mod+o focus child
+
+
+# send window to scratchpad
+bindsym $mod+Shift+n move scratchpad
+bindsym $mod+n [title="^[^m].*"] scratchpad show
+bindsym $mod+c [title="mirssi"] scratchpad show
+
+# switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# move focused container between monitors
+bindsym $mod+o move container to output right
+# move focused workspace between monitors
+bindsym $mod+Shift+o move workspace to output right
+bindsym $mod+Escape workspace back_and_forth
+
+
+bindsym $mod+Pause exec $HOME/bin/lock
+bindsym $mod+Control+Pause exec $HOME/bin/lock; exec systemctl suspend
+
+# media keys
+bindsym XF86AudioMute         exec  "$HOME/bin/notify_volume toggle"
+bindsym XF86AudioLowerVolume  exec  "$HOME/bin/notify_volume decrease"
+bindsym XF86AudioRaiseVolume  exec  "$HOME/bin/notify_volume increase"
+bindsym XF86AudioNext         exec  "$HOME/bin/notify_mpd next"
+bindsym XF86AudioPlay         exec  "$HOME/bin/notify_mpd toggle"
+bindsym XF86AudioStop         exec  "$HOME/bin/notify_mpd stop"
+bindsym XF86AudioPrev         exec  "$HOME/bin/notify_mpd prev"
+bindsym XF86Eject             exec  "$HOME/bin/notify_mpd switch"
+bindsym XF86Tools             exec  "$HOME/bin/notify_mpd"
+
+### THEME
+# Solarized theme
+# black dark/light
+set $color00    #073642
+set $color08    #002B36
+# red dark/light
+set $color01    #DC322F
+set $color09    #CB4B16
+# green dark/light
+set $color02    #859900
+set $color10    #B3CD01
+# yellow dark/light
+set $color03    #B58900
+set $color11    #F4C32F
+# blue dark/light
+set $color04    #268BD2
+set $color12    #30A6F8
+# magenta dark/light
+set $color05    #D33682
+set $color13    #6C71C4
+# cyan dark/light
+set $color06    #00AFFF
+set $color14    #69B3AD
+# white dark/light
+set $color07    #EEE8D5
+set $color15    #FDF6E3
+# background
+set $background #3F3F3F
+
+# Border style
+new_window 1pixel
+new_float  normal
+
+# Client colors
+# colorclass            <border>      <bg>          <text>      <indicator>
+client.focused          $color04      $color04      $color07    $color02
+client.focused_inactive $background   $background   $color07    $color02
+client.unfocused        $background   $background   $color12    $color10
+client.urgent           $background   $background   $color02    $color10
+
+# Start i3bar to display a workspace bar
+bar {
+  tray_output primary
+
+  colors {
+    background $background
+    statusline $color12
+
+    # colorclass        <border>      <bg>          <text>
+    focused_workspace   $color04      $color04      $color07
+    active_workspace    $color04      $background   $color07
+    inactive_workspace  $background   $background   $color12
+    urgent_workspace    $background   $background   $color02
+  }
+
+  font            pango:Inconsolata for Powerline 10
+  position        top
+  status_command  $HOME/.config/i3/i3bar-conky
+}
+
+# Workspaces
+workspace 1 output DVI-I-3
+
+assign [class="Firefox"] 1
+
+# Rules
+for_window [class="Firefox" instance="Download"] floating enable; move right 400; move down 400
+for_window [class="xbmc.bin"] fullscreen
+
+# Autostart
+exec $HOME/bin/autostart
+
