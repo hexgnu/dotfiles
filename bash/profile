@@ -107,6 +107,8 @@ PS2="$LIGHT_CYAN-$CYAN-$GRAY-$NO_COLOUR "
 termwide
 alias be='bundle exec'
 alias gb="git branch | grep '*' | cut -d ' ' -f 2"
+
+export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
