@@ -6,9 +6,12 @@ link_file() {
 }
 
 dir=`pwd`
+link_file  ~/.bashrc                        "${dir}/bash/profile"
 link_file  ~/.conkyrc                       "${dir}/conky/conkyrc"
 link_file  ~/.gdbinit                       "${dir}/gdb/gdbinit"
 link_file  ~/.gemrc                         "${dir}/gem/gemrc"
 link_file  ~/.gitconfig                     "${dir}/git/gitconfig"
 link_file  ~/.gitk                          "${dir}/git/gitk"
 link_file  ~/.tmux.conf                     "${dir}/tmux/tmux.conf"
+link_file  ~/.vimrc			    "${dir}/vim/vimrc"
+link_file  ~/.vim/colors/solarized.vim      "${dir}/vim/colors/solarized.vim"

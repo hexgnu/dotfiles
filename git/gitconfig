@@ -7,6 +7,7 @@
 [user]
     name  = Matthew Kirk
     email = meteor.kirk@gmail.com
+    signingkey = 93A82F4A27594B09
 
 [diff]
     tool = vimdiff
