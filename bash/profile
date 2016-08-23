@@ -115,5 +115,3 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 
 eval "$(direnv hook bash)"
-
-# . ~/git/dotfiles/bash/pacman.sh

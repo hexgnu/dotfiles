@@ -6,6 +6,7 @@ link_file() {
 }
 
 dir=`pwd`
+curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
 link_file  ~/.bashrc                        "${dir}/bash/profile"
 link_file  ~/.conkyrc                       "${dir}/conky/conkyrc"
 link_file  ~/.gdbinit                       "${dir}/gdb/gdbinit"
