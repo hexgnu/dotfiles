@@ -8,4 +8,9 @@ alias gb="git branch | grep '*' | cut -d ' ' -f 2"
 
 export PATH="$HOME/.rbenv/bin:$PATH"
 
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+  eval `ssh-agent -s`
+  ssh-add
+fi
+
 . ~/.bashrc
