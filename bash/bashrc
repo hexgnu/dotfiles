@@ -37,6 +37,14 @@ termwide
 eval "$(rbenv init -)"
 eval "$(direnv hook bash)"
 
+alias ..='cd ..' 
+alias ls="ls -FG"
+alias l="ls -lAhG"
+alias ll="ls -lG"
+alias la='ls -AG'
+alias be='bundle exec'
+alias gb="git branch | grep '*' | cut -d ' ' -f 2"
+
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi

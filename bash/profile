@@ -1,11 +1,3 @@
-alias ..='cd ..'
-alias ls="ls -FG"
-alias l="ls -lAhG"
-alias ll="ls -lG"
-alias la='ls -AG'
-alias be='bundle exec'
-alias gb="git branch | grep '*' | cut -d ' ' -f 2"
-
 export PATH="$HOME/.rbenv/bin:$PATH"
 
 if [ -z "$SSH_AUTH_SOCK" ] ; then
