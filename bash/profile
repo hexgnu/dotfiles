@@ -7,3 +7,5 @@ alias be='bundle exec'
 alias gb="git branch | grep '*' | cut -d ' ' -f 2"
 
 export PATH="$HOME/.rbenv/bin:$PATH"
+
+. ~/.bashrc
