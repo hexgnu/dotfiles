@@ -7,7 +7,14 @@ link_file() {
 
 dir=`pwd`
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
-link_file  ~/.bashrc                        "${dir}/bash/profile"
+
+cd ${dir}/bash
+gcc prompt_command.c
+sudo mv a.out /usr/local/bin/hexgnu_prompt
+cd -
+
+link_file  ~/.bashrc                        "${dir}/bash/bashrc"
+link_file  ~/.bash_profile                  "${dir}/bash/profile"
 link_file  ~/.conkyrc                       "${dir}/conky/conkyrc"
 link_file  ~/.gdbinit                       "${dir}/gdb/gdbinit"
 link_file  ~/.gemrc                         "${dir}/gem/gemrc"
