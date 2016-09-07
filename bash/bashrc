@@ -44,6 +44,9 @@ alias ll="ls -lG"
 alias la='ls -AG'
 alias be='bundle exec'
 alias gb="git branch | grep '*' | cut -d ' ' -f 2"
+alias grep="grep --color=auto"
+# alias vim="emacs -nw"
+alias e="emacs -nw"
 
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
@@ -53,6 +56,6 @@ if [ -f ~/.gnupg/.gpg-agent-info ] && [ -n "$(pgrep gpg-agent)" ]; then
     source ~/.gnupg/.gpg-agent-info
     export GPG_AGENT_INFO
 else
-    eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info)
+    eval $(gpg-agent --daemon)
 fi
 
