@@ -1,7 +1,9 @@
 #!/bin/sh
 
 link_file() {
-  rm "$1"
+  d=$(dirname $1)
+  mkdir -p $d
+  rm "$1" || echo 'Not removing'
   ln -s "$2" "$1"
 }
 
@@ -23,3 +25,5 @@ link_file  ~/.gitk                          "${dir}/git/gitk"
 link_file  ~/.tmux.conf                     "${dir}/tmux/tmux.conf"
 link_file  ~/.vimrc			    "${dir}/vim/vimrc"
 link_file  ~/.vim/colors/solarized.vim      "${dir}/vim/colors/solarized.vim"
+link_file  ~/.gnupg/gpg-agent.conf          "${dir}/gnupg/gpg-agent.conf"
+link_file  ~/.gnupg/gpg.conf                "${dir}/gnupg/gpg.conf"
