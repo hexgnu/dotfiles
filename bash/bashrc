@@ -45,9 +45,6 @@ PS2="$LIGHT_CYAN-$CYAN-$GRAY-$NO_COLOUR "
 
 termwide
 
-eval "$(rbenv init -)"
-eval "$(direnv hook bash)"
-
 alias ..='cd ..' 
 alias ls="ls -FG"
 alias l="ls -lAhG"
@@ -79,11 +76,9 @@ export GPG_TTY
         
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$HOME/.rbenv/bin:$PATH:/etc/pki/tls/misc"
-export DOCKER=$(which docker)
-eval "$(pyenv init -)"
 eval "$(rbenv init -)"
-eval "$(~/.orc/bin/orc init -)"
-# eval "$(docker-machine env default)"
+eval "$(direnv hook bash)"
+eval "$(pyenv init -)"
 
-export NVM_DIR="/home/hexgnu/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# export NVM_DIR="/home/hexgnu/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
