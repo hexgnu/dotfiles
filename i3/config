@@ -204,12 +204,14 @@ bar {
 
   font            pango:Inconsolata for Powerline 10
   position        top
-  status_command  $HOME/.config/i3/i3bar-conky
+  status_command  i3status
+  # status_command  $HOME/.config/i3/i3bar-conky
 }
 
 # Workspaces
 workspace 1 output DVI-I-3
 
+exec --no-startup-id redshift-gtk
 exec --no-startup-id feh --bg-scale ~/Pictures/background.jpeg
 
 assign [class="Firefox"] 1

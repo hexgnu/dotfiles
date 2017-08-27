@@ -11,5 +11,7 @@ set shiftwidth=2
 set softtabstop=2
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.log,*.aux,*.pdf
 set runtimepath^=~/.vim/bundle/ctrlp.vim
+set runtimepath^=~/.vim/bundle/nerdtree
 set background=dark
 colorscheme elflord
+

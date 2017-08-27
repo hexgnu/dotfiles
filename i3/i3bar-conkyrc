@@ -35,5 +35,10 @@ TEXT
   { "full_text" : "] [", "color" : "\#EEE8D5", "separator" : false, "separator_block_width" : 3 }, \
   { "full_text" : "${time %d %B %Y %H:%M}", "color" : "\#268BD2", "separator" : false, "separator_block_width" : 3 }, \
 \
+  { "full_text" : "${battery_time}" },
+  { "full_text" : "${battery_time BAT1}" },
+  { "full_text" : "${battery_percent}"  },
+  { "full_text" : "${battery_percent BAT1}" }, \
+\
   { "full_text" : "]", "color" : "\#EEE8D5", "separator" : false, "separator_block_width" : 3 } \
 ],
