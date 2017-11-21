@@ -16,6 +16,8 @@
     diff =
 
 [commit]
+    template = ~/.git/git-commit-template.txt
+    strip = true
     gpgsign = true
 
 [alias]

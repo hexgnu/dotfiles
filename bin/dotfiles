@@ -15,6 +15,9 @@ gcc prompt_command.c
 sudo mv a.out /usr/local/bin/hexgnu_prompt
 cd -
 
+mkdir -p ~/.git/templates
+cp "${dir}/git/git-commit-template.txt" ~/.git/
+
 link_file  ~/.bashrc                        "${dir}/bash/bashrc"
 link_file  ~/.bash_profile                  "${dir}/bash/profile"
 link_file  ~/.conkyrc                       "${dir}/conky/conkyrc"
