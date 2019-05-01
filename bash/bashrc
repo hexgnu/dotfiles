@@ -1,18 +1,14 @@
-PROMPT_COMMAND=hexgnu_prompt
+#!/bin/bash
+stty -ixon # Disable ctrl-s and ctrl-q.
 
+shopt -s autocd #Allows you to cd into directory merely by typing the directory name.
 shopt -s checkwinsize
 
-export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
-export HISTSIZE=100000                   # big big history
-export HISTFILESIZE=100000               # big big history
-shopt -s histappend                      # append to history, don't overwrite it
+HISTSIZE= HISTFILESIZE= # Infinite history.
 
-# Save and reload the history after each command finishes
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+export PROMPT_COMMAND=hexgnu_prompt
 
-#
 function termwide {
-
 local GRAY="\[\033[1;30m\]"
 local LIGHT_GRAY="\[\033[0;37m\]"
 local WHITE="\[\033[1;37m\]"
@@ -45,50 +41,70 @@ PS2="$LIGHT_CYAN-$CYAN-$GRAY-$NO_COLOUR "
 
 termwide
 
-alias ..='cd ..' 
-alias ls="ls -FG"
-alias l="ls -lAhG"
-alias ll="ls -lG"
-alias la='ls -AG'
-alias be='bundle exec'
-alias gb="git branch | grep '*' | cut -d ' ' -f 2"
-alias grep="grep --color=auto"
-# alias vim="emacs -nw"
-alias e="emacs -nw"
-alias pbcopy='xclip -selection clipboard'
-alias pbpaste='xclip -selection clipboard -o'
-alias docker='sudo -E docker'
-alias docker-compose='sudo -E docker-compose'
-alias ansible='cd ~/git/ops-ansible && docker-compose run --rm ansible bash'
-alias reader_cf='mysql -umkirk -pFjei391nzlqioOQIj92lzqoriqurw -hclickfunnels-production-again-cluster.cluster-ro-c4gxn5pmgmjd.us-east-1.rds.amazonaws.com clickfunnels'
-alias mothership='cd ~/git/mothership && docker-compose run --rm app bash'
-alias cf_redshift='psql "postgres://matt:EgAZDAl7f4g6H&6dniXD@cf-redshift.c4niwagvysbq.us-east-1.redshift.amazonaws.com:5439/dev"'
-export qmake="qmake-qt4"
+function cat {
+	highlight --out-format=ansi $* 2> /dev/null || /usr/bin/cat $*
+}
+
+alias gs="git status" \
+      jn="jupyter notebook" \
+      ipy="ipython" \
+      v="vim" \
+      grep="grep --color=auto" \
+      pbcopy='xclip -selection clipboard' \
+      pbpaste='xclip -selection clipboard -o' \
+      docker='sudo -E docker' \
+      docker-compose='sudo -E docker-compose' \
+      dnf="sudo dnf" \
+      g="git" \
+      e="$EDITOR" \
+      v="$EDITOR" \
+      diff="diff --color=auto" \
+      gua="git remote | xargs -L1 git push --all" \
+      gb="git branch | grep '*' | cut -d ' ' -f 2" \
+
+command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d" # Use neovim for vim if present.
 
 if [ -f ~/.git-completion.bash ]; then
-  . ~/.git-completion.bash
+  . ~/.git-completion.bash &> /dev/null
 fi
 
+# This fixes the gpg2 problems I was encountering
 if [ -e /run/user/1000/gnupg/S.gpg-agent.ssh ] && [ -n "$(pgrep gpg-agent)" ]; then
     SSH_AUTH_SOCK=/run/user/1000/gnupg/S.gpg-agent.ssh; export SSH_AUTH_SOCK;
     GPG_AGENT_INFO=/run/user/1000/gnupg/S.gpg-agent:0:1; export GPG_AGENT_INFO;
 else
-    eval $(gpg-agent --daemon --enable-ssh-support)
+    eval $(gpg-agent --daemon --enable-ssh-support) &> /dev/null
 fi
 
-GPG_TTY=$(tty)
-export GPG_TTY
-        
+export GPG_TTY=$(tty)
 export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$HOME/.rbenv/bin:$PATH:/etc/pki/tls/misc"
-eval "$(rbenv init -)"
-eval "$(direnv hook bash)"
-eval "$(pyenv init -)"
+export PATH="$PATH:$PYENV_ROOT/bin"
+# I'd like to get rid of these... tbh
 
-export NVM_DIR="/home/hexgnu/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/Devel
-source /usr/bin/virtualenvwrapper.sh
+_direnv_hook() {
+  local previous_exit_status=$?;
+  eval "$(direnv export bash)";
+  return $previous_exit_status;
+};
+if ! [[ "$PROMPT_COMMAND" =~ _direnv_hook ]]; then
+  PROMPT_COMMAND="_direnv_hook;$PROMPT_COMMAND";
+fi
+
+export PATH="/home/hexgnu/.pyenv/shims:${PATH}"
+export PYENV_SHELL=bash
+source '/home/hexgnu/.pyenv/libexec/../completions/pyenv.bash'
+pyenv() {
+  local command
+  command="${1:-}"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
+
+  case "$command" in
+  rehash|shell)
+    eval "$(pyenv "sh-$command" "$@")";;
+  *)
+    command pyenv "$command" "$@";;
+  esac
+}

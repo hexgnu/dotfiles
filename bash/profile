@@ -1,6 +1,16 @@
+#!/bin/sh
+
+# Profile file. runs on login.
+
+export EDITOR="nvim"
+export TERMINAL="st"
+export BROWSER="firefox"
+export READER="zathura"
+export FILE="vifm"
+
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
-export CLICOLOR=1
-export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
-. ~/.bashrc
+source "$HOME/.bashrc"
+
+# [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x i3 >/dev/null && exec startx
