@@ -1,3 +1,4 @@
+execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
@@ -7,11 +8,14 @@ set ruler
 set number
 
 set expandtab
-set shiftwidth=2
-set softtabstop=2
+set textwidth=120
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+set autoindent
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.log,*.aux,*.pdf
 set runtimepath^=~/.vim/bundle/ctrlp.vim
-set runtimepath^=~/.vim/bundle/nerdtree
 set background=dark
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 colorscheme elflord
 

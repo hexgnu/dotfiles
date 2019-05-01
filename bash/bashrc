@@ -57,7 +57,12 @@ alias grep="grep --color=auto"
 alias e="emacs -nw"
 alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
-alias docker='sudo docker'
+alias docker='sudo -E docker'
+alias docker-compose='sudo -E docker-compose'
+alias ansible='cd ~/git/ops-ansible && docker-compose run --rm ansible bash'
+alias reader_cf='mysql -umkirk -pFjei391nzlqioOQIj92lzqoriqurw -hclickfunnels-production-again-cluster.cluster-ro-c4gxn5pmgmjd.us-east-1.rds.amazonaws.com clickfunnels'
+alias mothership='cd ~/git/mothership && docker-compose run --rm app bash'
+alias cf_redshift='psql "postgres://matt:EgAZDAl7f4g6H&6dniXD@cf-redshift.c4niwagvysbq.us-east-1.redshift.amazonaws.com:5439/dev"'
 export qmake="qmake-qt4"
 
 if [ -f ~/.git-completion.bash ]; then
@@ -80,5 +85,10 @@ eval "$(rbenv init -)"
 eval "$(direnv hook bash)"
 eval "$(pyenv init -)"
 
-# export NVM_DIR="/home/hexgnu/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+export NVM_DIR="/home/hexgnu/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Devel
+source /usr/bin/virtualenvwrapper.sh
