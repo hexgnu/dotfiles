@@ -10,6 +10,8 @@ link_file() {
 dir=`pwd`
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
 
+git clone https://github.com/vivien/i3blocks-contrib ~/.config/i3blocks
+
 cd ${dir}/bash
 gcc prompt_command.c
 sudo mv a.out /usr/local/bin/hexgnu_prompt
@@ -26,9 +28,8 @@ link_file  ~/.gemrc                         "${dir}/gem/gemrc"
 link_file  ~/.gitconfig                     "${dir}/git/gitconfig"
 link_file  ~/.gitk                          "${dir}/git/gitk"
 link_file  ~/.tmux.conf                     "${dir}/tmux/tmux.conf"
-link_file  ~/.vimrc			    "${dir}/vim/vimrc"
-link_file  ~/.vim/colors/solarized.vim      "${dir}/vim/colors/solarized.vim"
+link_file  ~/.config/nvim/init.vim          "${dir}/nvim/vimrc"
 link_file  ~/.gnupg/gpg-agent.conf          "${dir}/gnupg/gpg-agent.conf"
 link_file  ~/.gnupg/gpg.conf                "${dir}/gnupg/gpg.conf"
-link_file  ~/.config/redshift.conf          "${dir}/redshift/redshift.conf"
-link_file  ~/.config/redshift/hooks/brightness.sh "${dir}/redshift/hooks/brightness.sh"
+link_file  ~/.config/i3/config              "${dir}/i3/config"
+link_file  ~/.config/i3blocks/config        "${dir}/i3blocks/config"
