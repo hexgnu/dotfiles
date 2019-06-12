@@ -1,5 +1,5 @@
 [core]
-    editor       = vim
+    editor       = nvim
     excludesfile = ~/.git/gitignore
     autocrlf     = false
     filemode     = false

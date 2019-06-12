@@ -109,3 +109,4 @@ pyenv() {
     command pyenv "$command" "$@";;
   esac
 }
+export PATH="$HOME/.rbenv/bin:$PATH"
