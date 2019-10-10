@@ -57,10 +57,10 @@ alias diff="diff --color=auto" \
       gs="git status" \
       gua="git remote | xargs -L1 git push --all" \
       ipy="ipython" \
-      jn="jupyter notebook" \
       ls="ls --color=auto" \
       pbcopy='xclip -selection clipboard' \
       pbpaste='xclip -selection clipboard -o' \
+      jn='jupyter notebook --ip=127.0.0.1' \
       v="$EDITOR" \
 
 command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d" # Use neovim for vim if present.
