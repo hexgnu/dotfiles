@@ -80,6 +80,7 @@ fi
 export GPG_TTY=$(tty)
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PATH:$PYENV_ROOT/bin"
+
 # I'd like to get rid of these... tbh
 
 
