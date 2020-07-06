@@ -80,6 +80,7 @@ fi
 export GPG_TTY=$(tty)
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PATH:$PYENV_ROOT/bin"
+
 # I'd like to get rid of these... tbh
 
 
@@ -92,7 +93,8 @@ if ! [[ "$PROMPT_COMMAND" =~ _direnv_hook ]]; then
   PROMPT_COMMAND="_direnv_hook;$PROMPT_COMMAND";
 fi
 
-export PATH="/home/hexgnu/.pyenv/shims:${PATH}"
+export PATH=$PATH:$(go env GOPATH)/bin
+export PATH="/usr/pgsql-12/bin:/home/hexgnu/.pyenv/shims:${PATH}:./node_modules/.bin"
 export PYENV_SHELL=bash
 source '/home/hexgnu/.pyenv/libexec/../completions/pyenv.bash'
 pyenv() {
@@ -109,4 +111,5 @@ pyenv() {
     command pyenv "$command" "$@";;
   esac
 }
-export PATH="$HOME/.rbenv/bin:$PATH"
+
+. /home/hexgnu/.pyenv/versions/anaconda3-5.3.1/etc/profile.d/conda.sh

@@ -9,6 +9,7 @@
 #define ANSI_COLOR_CYAN     "\x1b[1;36m"
 #define ANSI_COLOR_GREY     "\x1b[0;37m"
 #define ANSI_COLOR_YELLOW   "\x1b[1;33m"
+
 int main() {
   struct winsize w;
   ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
@@ -32,7 +33,7 @@ int main() {
     c++;
   }
 
-  snprintf(buffer, sizeof(buffer), ANSI_COLOR_GREY "--(" ANSI_COLOR_MAGENTA "%s" ANSI_COLOR_GREY "@" ANSI_COLOR_CYAN "%s" ANSI_COLOR_GREY ")-", username, clean_hostname);
+  snprintf(buffer, sizeof(buffer), ANSI_COLOR_GREY "--(" ANSI_COLOR_CYAN "%s" ANSI_COLOR_GREY "@" ANSI_COLOR_MAGENTA "%s" ANSI_COLOR_GREY ")-", username, clean_hostname);
 
 
   for (i = 0; i < w.ws_col; i++) {

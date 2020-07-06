@@ -13,8 +13,14 @@ set softtabstop=4
 set tabstop=4
 set autoindent
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.log,*.aux,*.pdf
-set runtimepath^=~/.config/nvim/bundle/ctrlp.vim
 set background=dark
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 colorscheme elflord
 
+call plug#begin(stdpath('data') . '/plugged')
+
+Plug 'elmcast/elm-vim'
+
+Plug 'ctrlpvim/ctrlp.vim'
+
+call plug#end()
