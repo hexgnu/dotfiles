@@ -31,15 +31,18 @@ font pango:Source Code Pro 20
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
-exec --no-startup-id compton --opacity-rule '100:window_type = "dock" && class_g = "i3bar"' --config ~/.config/i3/compton.conf -b
+
+exec --no-startup-id picom --config ~/.config/picom.conf -b
 
 exec --no-startup-id redshift-gtk
 
-exec --no-startup-id xrandr --output DP-1 --mode 2560x1440 --output DP-1 --above eDP-1
+exec --no-startup-id xrandr --output DP-3 --mode 3840x2160 --dpi 220 --set dithering Off 
+
+# exec --no-startup-id xrandr --output DP-1 --mode 2560x1440 --output DP-1 --above eDP-1
 
 exec --no-startup-id feh --bg-scale ~/background.jpg
 
-exec rescuetime
+# exec rescuetime
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal

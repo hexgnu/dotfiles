@@ -41,29 +41,27 @@ PS2="$LIGHT_CYAN-$CYAN-$GRAY-$NO_COLOUR "
 
 termwide
 
-function cat {
+function hcat {
 	highlight --out-format=ansi $* 2> /dev/null || /usr/bin/cat $*
 }
 
+export EDITOR="emacsclient -a '' -nw"
+export VISUAL="emacsclient -a '' -nw"
 
+export TERM='xterm-256color'
 alias diff="diff --color=auto" \
       dnf="sudo dnf" \
-      docker='sudo -E docker' \
+      podman='sudo podman' \
       docker-compose='sudo -E docker-compose' \
-      e="$EDITOR" \
-      g="git" \
       gb="git branch | grep '*' | cut -d ' ' -f 2" \
       grep="grep --color=auto" \
-      gs="git status" \
-      gua="git remote | xargs -L1 git push --all" \
-      ipy="ipython" \
       ls="ls --color=auto" \
       pbcopy='xclip -selection clipboard' \
       pbpaste='xclip -selection clipboard -o' \
-      jn='jupyter notebook --ip=127.0.0.1' \
-      v="$EDITOR" \
+      vim="$EDITOR" \
+      e="$EDITOR"
 
-command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d" # Use neovim for vim if present.
+# command -v nvim >/dev/null && alias vim="nvim" vimdiff="nvim -d" # Use neovim for vim if present.
 
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash &> /dev/null
@@ -93,7 +91,7 @@ if ! [[ "$PROMPT_COMMAND" =~ _direnv_hook ]]; then
   PROMPT_COMMAND="_direnv_hook;$PROMPT_COMMAND";
 fi
 
-export PATH=$PATH:$(go env GOPATH)/bin
+# export PATH=$PATH:$(go env GOPATH)/bin
 export PATH="/usr/pgsql-12/bin:/home/hexgnu/.pyenv/shims:${PATH}:./node_modules/.bin"
 export PYENV_SHELL=bash
 source '/home/hexgnu/.pyenv/libexec/../completions/pyenv.bash'
@@ -112,4 +110,22 @@ pyenv() {
   esac
 }
 
-. /home/hexgnu/.pyenv/versions/anaconda3-5.3.1/etc/profile.d/conda.sh
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/hexgnu/.pyenv/versions/miniconda3-latest/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/hexgnu/.pyenv/versions/miniconda3-latest/etc/profile.d/conda.sh" ]; then
+        . "/home/hexgnu/.pyenv/versions/miniconda3-latest/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/hexgnu/.pyenv/versions/miniconda3-latest/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+export PATH="$HOME/.rbenv/bin:$PATH"
+
+eval "$(rbenv init -)"
