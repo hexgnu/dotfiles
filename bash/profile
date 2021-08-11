@@ -14,3 +14,4 @@ export LANG=en_US.UTF-8
 source "$HOME/.bashrc"
 
 # [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x i3 >/dev/null && exec startx
+source "$HOME/.cargo/env"
