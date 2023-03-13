@@ -5,8 +5,8 @@
     filemode     = false
 
 [user]
-    name  = Matthew Kirk
-    email = matt@matthewkirk.com
+	name = Matthew Kirk
+	email = matt@matthewkirk.com
     signingkey = 93A82F4A27594B09
 
 [diff]
@@ -121,4 +121,7 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+	required = true
+[filter "xet"]
+	process = git xet filter
 	required = true
