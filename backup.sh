@@ -26,10 +26,10 @@ EXCLUDES=(
 #   --one-file-system --partial --sparse "${EXCLUDES[@]}" \
 #   "/home/$USER/" "$DEST"
 
-rsync -aAXH --numeric-ids --info=progress2 --delete \
+sudo rsync -aAXH --numeric-ids --info=progress2 --delete \
   --one-file-system --partial --sparse "${EXCLUDES[@]}" \
   "/home/$USER/" "$DEST"
 
-rsync -aAXH --numeric-ids --info=progress2 --delete \
+sudo rsync -aAXH --numeric-ids --info=progress2 --delete \
   --one-file-system --partial --sparse "${EXCLUDES[@]}" \
   "/home/$USER/" "$DEST"
