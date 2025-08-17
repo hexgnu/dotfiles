@@ -15,3 +15,5 @@ source "$HOME/.bashrc"
 
 # [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x i3 >/dev/null && exec startx
 source "$HOME/.cargo/env"
+
+. "$HOME/.local/bin/env"

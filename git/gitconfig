@@ -5,9 +5,9 @@
     filemode     = false
 
 [user]
-    name  = Matthew Kirk
-    email = matt@matthewkirk.com
-    signingkey = 93A82F4A27594B09
+	name = Matthew Kirk
+	email = matt@matthewkirk.com
+	signingkey = 84081FF5CDB657869C7172710562953BABA7545A
 
 [diff]
     tool = vimdiff
@@ -18,7 +18,7 @@
 [commit]
     template = ~/.git/git-commit-template.txt
     strip = true
-    gpgsign = false
+	gpgsign = true
 
 [alias]
     a     = add
@@ -117,6 +117,9 @@
 	smudge = git media smudge %f
 [gpg]
 	program = gpg2
+[filter "xet"]
+	process = git xet filter
+	required = true
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
