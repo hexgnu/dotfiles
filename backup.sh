@@ -30,6 +30,6 @@ sudo rsync -aAXH --numeric-ids --info=progress2 --delete \
   --one-file-system --partial --sparse "${EXCLUDES[@]}" \
   "/home/$USER/" "$DEST"
 
-sudo rsync -aAXH --numeric-ids --info=progress2 --delete \
-  --one-file-system --partial --sparse "${EXCLUDES[@]}" \
-  "/home/$USER/" "$DEST"
+# sudo rsync -aAXH --numeric-ids --info=progress2 --delete \
+#   --one-file-system --partial --sparse "${EXCLUDES[@]}" \
+#   "/home/$USER/" "$DEST"
