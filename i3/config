@@ -11,6 +11,16 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+# exec --no-startup-id sh -c 'ln -sf /dev/null ~/.local/share/dbus-1/services/org.freedesktop.impl.portal.desktop.gnome.service; systemctl --user restart xdg-desktop-portal'
+
+exec --no-startup-id sh -c 'export XDG_CURRENT_DESKTOP=i3; systemctl --user stop xdg-desktop-portal-gnome; systemctl --user restart xdg-desktop-portal-gtk; systemctl --user restart xdg-desktop-portal'
+
+exec --no-startup-id xfsettingsd --replace
+exec --no-startup-id xrdb -merge ~/.Xresources
+
+# exec --no-startup-id sh -c "gsettings set org.gnome.settings-daemon.plugins.xsettings overrides \"{'Xft/DPI': <196608>}\" && /usr/libexec/gsd-xsettings"
+
+
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -32,13 +42,13 @@ font pango:Source Code Pro 16
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-exec --no-startup-id picom --config ~/.config/picom.conf -b
+# exec --no-startup-id picom --config ~/.config/picom.conf -b
 
 exec --no-startup-id xrandr --output DP-3 --mode 3840x2160 --dpi 220 --set dithering Off 
 
-exec --no-startup-id feh --bg-scale ~/background.jpg
+# exec --no-startup-id feh --bg-scale ~/background.jpg
 
-exec --no-startup-id rescuetime
+# exec --no-startup-id rescuetime
 
 
 # start a terminal

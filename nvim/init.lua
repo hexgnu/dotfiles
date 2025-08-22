@@ -26,6 +26,49 @@ if vim.uv == nil then
   vim.uv = vim.loop
 end
 
+-- Highlight the entire line for diagnostics
+vim.cmd [[
+  highlight DiagnosticLineError guibg=#51202A guifg=NONE
+  highlight DiagnosticLineWarn  guibg=#51412A guifg=NONE
+  highlight DiagnosticLineInfo  guibg=#1E535D guifg=NONE
+  highlight DiagnosticLineHint  guibg=#1E205D guifg=NONE
+]]
+
+local function find_python_host()
+  local cwd = vim.fn.getcwd()
+  local venv_python = cwd .. "/.venv/bin/python"
+  if vim.uv.fs_stat(venv_python) then
+    return venv_python
+  else
+    -- fallback to pyenv shim
+    return vim.fn.exepath("python3")
+  end
+end
+
+vim.g.python3_host_prog = find_python_host()
+-- Apply the highlights automatically
+vim.api.nvim_create_autocmd("DiagnosticChanged", {
+  callback = function()
+    vim.api.nvim_buf_clear_namespace(0, -1, 0, -1)
+    local diagnostics = vim.diagnostic.get(0)
+    for _, d in ipairs(diagnostics) do
+      local hl
+      if d.severity == vim.diagnostic.severity.ERROR then
+        hl = "DiagnosticLineError"
+      elseif d.severity == vim.diagnostic.severity.WARN then
+        hl = "DiagnosticLineWarn"
+      elseif d.severity == vim.diagnostic.severity.INFO then
+        hl = "DiagnosticLineInfo"
+      elseif d.severity == vim.diagnostic.severity.HINT then
+        hl = "DiagnosticLineHint"
+      end
+      if hl then
+        vim.api.nvim_buf_add_highlight(0, -1, hl, d.lnum, 0, -1)
+      end
+    end
+  end,
+})
+
 -- Set runtime path for CtrlP plugin
 -- vim.o.runtimepath = vim.o.runtimepath .. ',~/.config/nvim/bundle/ctrlp.vim'
 
@@ -36,19 +79,15 @@ packer.startup(function()
   -- Packer itself
   use 'wbthomason/packer.nvim'
 
+  use 'klepp0/nvim-baml-syntax'
+
   use 'glepnir/lspsaga.nvim'
 
-  use {
-      'nvim-treesitter/nvim-treesitter',
-      tag = 'v0.9.3'
-  }
+  use 'nvim-treesitter/nvim-treesitter'
 
   use 'tpope/vim-fugitive'
     
-  use {
-      'neovim/nvim-lspconfig',
-      tag = 'v1.8.0' -- or whatever tag you want
-  }
+  use 'neovim/nvim-lspconfig'
 
     -- Optionally, install nvim-cmp for autocompletion
   use 'hrsh7th/nvim-cmp'
@@ -112,51 +151,75 @@ local function get_python_venv_path()
   end
 end
 
+require('mason').setup()
+-- require('mason-lspconfig').setup({
+--   ensure_installed = { 'pyright' },
+--   automatic_installation = true,
+-- })
 
 local lspconfig = require('lspconfig')
+
+-- Cypher LSP
 lspconfig.cypher_ls.setup({
-    default_config = {
-        cmd = {'cypher-language-server', '--stdio'},
-        filetypes = {'cypher'},
-        root_dir = function(fname)
-            return vim.fn.getcwd()
-        end,
-        settings = {}
-    }
+  cmd = {'cypher-language-server', '--stdio'},
+  filetypes = {'cypher'},
+  root_dir = function()
+    return vim.fn.getcwd()
+  end,
+  settings = {}
 })
 
--- Pyright configuration
+-- Pyright LSP
+-- NOTE: keep your diagnostics handler + gl mapping intact
 lspconfig.pyright.setup({
+  root_dir = get_git_root(),
+  on_new_config = function(config, root_dir)
+    local python = get_python_venv_path()
+    config.settings = config.settings or {}
+    config.settings.python = config.settings.python or {}
+    config.settings.python.pythonPath = python
+
+    -- (Optional) also set VIRTUAL_ENV/PATH so subprocesses behave
+    local venv_dir = root_dir .. "/.venv"
+    if vim.uv.fs_stat(venv_dir) then
+      config.cmd_env = {
+        VIRTUAL_ENV = venv_dir,
+        PATH = venv_dir .. "/bin:" .. vim.env.PATH,
+      }
+    end
+  end,
   settings = {
     python = {
-      pythonPath = get_python_venv_path(),
       analysis = {
-        typeCheckingMode = "basic",  -- Options: 'off', 'basic', 'strict'
-        diagnosticMode = "workspace", -- You can change this to 'openFilesOnly'
-
+        typeCheckingMode = "basic",   -- 'off', 'basic', 'strict'
+        diagnosticMode = "workspace", -- or 'openFilesOnly'
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true,
       }
     }
   },
-    -- Configure diagnostics to be shown in a floating window
+
+  -- keep your diagnostics float behavior
   handlers = {
-    ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-      virtual_text = true,   -- Show virtual text inline
-      signs = true,          -- Show signs in the sign column
-      update_in_insert = false, -- Do not update diagnostics in insert mode
-      float = {
-        border = 'rounded',  -- Change border style (e.g., 'single', 'double', 'rounded')
-        source = 'always',   -- Show the source (e.g., Pyright)
-        header = '',         -- Hide header (optional)
-        prefix = '',         -- Hide prefix (optional)
-      },
-    }),
+    ["textDocument/publishDiagnostics"] = vim.lsp.with(
+      vim.lsp.diagnostic.on_publish_diagnostics,
+      {
+        virtual_text = true,
+        signs = true,
+        update_in_insert = false,
+        float = {
+          border = 'rounded',
+          source = 'always',
+          header = '',
+          prefix = '',
+        },
+      }
+    ),
   },
 
-  -- Additional setup for keybindings and other functionality
-  on_attach = function(client, bufnr)
-    -- Keybinding to show diagnostics in a floating window using new API
-    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  on_attach = function(_, bufnr)
     local opts = { noremap = true, silent = true }
+    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
     buf_set_keymap('n', 'gl', '<Cmd>lua vim.diagnostic.open_float()<CR>', opts)
     buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
     buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -179,12 +242,25 @@ cmp.setup({
   },
 })
 
--- Optional: Enable mason.nvim for LSP server management
-require('mason').setup()
-require('mason-lspconfig').setup({
-  ensure_installed = { 'pyright' },
-  automatic_installation = true,
-})
+-- Jump to next diagnostic
+vim.keymap.set('n', ']d', function()
+  vim.diagnostic.goto_next()
+end, { desc = "Next diagnostic" })
+
+-- Jump to previous diagnostic
+vim.keymap.set('n', '[d', function()
+  vim.diagnostic.goto_prev()
+end, { desc = "Prev diagnostic" })
+
+-- Jump to next ERROR only
+vim.keymap.set('n', ']e', function()
+  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Next error" })
+
+-- Jump to previous ERROR only
+vim.keymap.set('n', '[e', function()
+  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Prev error" })
 
 -- Additional settings for Neovim (optional)
 vim.o.completeopt = "menuone,noselect"
