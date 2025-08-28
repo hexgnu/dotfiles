@@ -152,10 +152,6 @@ local function get_python_venv_path()
 end
 
 require('mason').setup()
--- require('mason-lspconfig').setup({
---   ensure_installed = { 'pyright' },
---   automatic_installation = true,
--- })
 
 local lspconfig = require('lspconfig')
 
@@ -168,6 +164,95 @@ lspconfig.cypher_ls.setup({
   end,
   settings = {}
 })
+
+-- -- Function to determine the Ruff command based on environment
+-- local function get_ruff_cmd()
+--   local config_path = vim.fn.expand("~/.config/nvim/ruff.toml")
+--   local base_args = {
+--     "server",
+--     "--preview", -- Enable preview features
+--     "--config", config_path, -- Force use of our config (overrides project config)
+--   }
+--   
+--   local git_root = get_git_root()
+--   if git_root then
+--     local uv_bin = git_root .. "/.venv/bin/uv"
+--     if vim.uv.fs_stat(uv_bin) then
+--       -- Use uv run to execute ruff within the virtual environment
+--       local cmd = { uv_bin, "run", "ruff" }
+--       vim.list_extend(cmd, base_args)
+--       return cmd
+--     end
+--     
+--     -- Check if ruff exists in the venv
+--     local venv_ruff = git_root .. "/.venv/bin/ruff"
+--     if vim.uv.fs_stat(venv_ruff) then
+--       local cmd = { venv_ruff }
+--       vim.list_extend(cmd, base_args)
+--       return cmd
+--     end
+--   end
+--   
+--   -- Fallback to system ruff
+--   local cmd = { "ruff" }
+--   vim.list_extend(cmd, base_args)
+--   return cmd
+-- end
+
+-- Ruff for Python linting and formatting (using built-in LSP)
+lspconfig.ruff.setup({
+  -- cmd = get_ruff_cmd(),
+  settings = {
+    -- Use global config file that overrides project settings  
+    configuration = vim.fn.expand("~/.config/nvim/ruff.toml"),
+    lineLength = 120,
+    fixAll = true,
+    lint = {
+        enable=true,
+        run = 'onType',
+    },
+    organizeImports = true,
+    configurationPreference = 'editorFirst',
+    format = {
+        enable = true
+    }
+  },
+  on_attach = function(client, bufnr)
+    -- Enable formatting
+    client.server_capabilities.documentFormattingProvider = true
+    client.server_capabilities.documentRangeFormattingProvider = true
+
+    local opts = { noremap = true, silent = true, buffer = bufnr }
+    -- Keymap: format with Ruff
+    vim.keymap.set("n", "<leader>f", function()
+      vim.lsp.buf.format({ async = true })
+    end, opts)
+  end
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.py",
+  callback = function()
+    -- run ruff fixAll
+    vim.lsp.buf.code_action({
+      apply = true,
+      context = { only = { "source.fixAll.ruff" } },
+    })
+    -- then format with Ruff's formatter (optional)
+    vim.lsp.buf.format({
+      async = false,
+      filter = function(client) return client.name == "ruff" end,
+    })
+  end,
+})
+
+vim.keymap.set("n", "<leader>rf", function()
+  vim.lsp.buf.code_action({
+    apply = true,
+    context = { only = { "source.fixAll.ruff" } },
+  })
+end, { noremap = true, silent = true, buffer = bufnr })
+
 
 -- Pyright LSP
 -- NOTE: keep your diagnostics handler + gl mapping intact
@@ -217,7 +302,11 @@ lspconfig.pyright.setup({
     ),
   },
 
-  on_attach = function(_, bufnr)
+  on_attach = function(client, bufnr)
+    -- Disable pyright's formatting in favor of ruff
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+    
     local opts = { noremap = true, silent = true }
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
     buf_set_keymap('n', 'gl', '<Cmd>lua vim.diagnostic.open_float()<CR>', opts)

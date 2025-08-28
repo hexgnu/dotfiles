@@ -61,13 +61,11 @@ bindsym $mod+Shift+q kill
 bindsym $mod+t exec --no-startup-id ~/git/personal/dotfiles/bin/add_todo.sh &> /tmp/todo_debug.log
 
 bindsym $mod+n exec --no-startup-id ~/git/personal/dotfiles/bin/toggle_sink.sh
-# start dmenu (a program launcher)
-# bindsym $mod+d exec dmenu_run
-# There also is the (new) i3-dmenu-desktop which only displays applications
-# shipping a .desktop file. It is a wrapper around dmenu, so you need that
-# installed.
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn 'Source Code Pro:pixelsize=30'"
-# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+# Rofi launcher (replaced dmenu)
+bindsym $mod+d exec --no-startup-id rofi -show drun -config ~/.config/rofi/config.rasi
+bindsym $mod+Shift+d exec --no-startup-id rofi -show run -config ~/.config/rofi/config.rasi
+bindsym $mod+Tab exec --no-startup-id rofi -show window -config ~/.config/rofi/config.rasi
+bindsym $mod+Shift+s exec --no-startup-id rofi -show ssh -config ~/.config/rofi/config.rasi
 
 bindsym $mod+a exec --no-startup-id todoist-quick-capture
 
@@ -102,7 +100,7 @@ bindsym $mod+h split h
 bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen toggle
+# bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
