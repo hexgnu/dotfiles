@@ -230,21 +230,21 @@ lspconfig.ruff.setup({
   end
 })
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*.py",
-  callback = function()
-    -- run ruff fixAll
-    vim.lsp.buf.code_action({
-      apply = true,
-      context = { only = { "source.fixAll.ruff" } },
-    })
-    -- then format with Ruff's formatter (optional)
-    vim.lsp.buf.format({
-      async = false,
-      filter = function(client) return client.name == "ruff" end,
-    })
-  end,
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   pattern = "*.py",
+--   callback = function()
+--     -- run ruff fixAll
+--     vim.lsp.buf.code_action({
+--       apply = true,
+--       context = { only = { "source.fixAll.ruff" } },
+--     })
+--     -- then format with Ruff's formatter (optional)
+--     vim.lsp.buf.format({
+--       async = false,
+--       filter = function(client) return client.name == "ruff" end,
+--     })
+--   end,
+-- })
 
 vim.keymap.set("n", "<leader>rf", function()
   vim.lsp.buf.code_action({

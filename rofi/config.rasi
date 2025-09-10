@@ -1,0 +1,170 @@
+configuration {
+    modi: "drun,run,window";
+    show-icons: true;
+    icon-theme: "Papirus";
+    font: "Source Code Pro 20";
+    display-drun: " ";
+    display-run: " ";
+    display-window: " ";
+    drun-display-format: "{name}";
+    disable-history: false;
+    sidebar-mode: false;
+}
+
+* {
+    background:     #282A36FF;
+    background-alt: #44475AFF;
+    foreground:     #F8F8F2FF;
+    selected:       #BD93F9FF;
+    active:         #50FA7BFF;
+    urgent:         #FF5555FF;
+    comment:        #6272A4FF;
+    cyan:           #8BE9FDFF;
+    pink:           #FF79C6FF;
+    orange:         #FFB86CFF;
+    yellow:         #F1FA8CFF;
+}
+
+window {
+    transparency: "real";
+    background-color: @background;
+    text-color: @foreground;
+    border: 2px;
+    border-color: @selected;
+    border-radius: 10px;
+    width: 600px;
+    location: center;
+    x-offset: 0;
+    y-offset: 0;
+}
+
+prompt {
+    enabled: true;
+    padding: 10px;
+    background-color: @background-alt;
+    text-color: @cyan;
+}
+
+entry {
+    background-color: @background;
+    text-color: @foreground;
+    placeholder-color: @comment;
+    expand: true;
+    horizontal-align: 0;
+    placeholder: "Search...";
+    padding: 10px 10px 10px 0px;
+    margin: 0px 0px 0px 0px;
+    blink: true;
+}
+
+inputbar {
+    children: [ prompt, entry ];
+    background-color: @background;
+    text-color: @foreground;
+    expand: false;
+    border: 0px 0px 2px 0px;
+    border-radius: 0px;
+    border-color: @background-alt;
+    margin: 0px;
+    padding: 0px;
+}
+
+listview {
+    background-color: @background;
+    padding: 10px;
+    columns: 1;
+    lines: 8;
+    spacing: 10px;
+    cycle: true;
+    dynamic: true;
+    layout: vertical;
+}
+
+mainbox {
+    background-color: @background;
+    border: 0px;
+    border-radius: 0px;
+    border-color: @selected;
+    children: [ inputbar, listview ];
+    spacing: 0px;
+    padding: 0px;
+}
+
+element {
+    background-color: transparent;
+    text-color: @foreground;
+    orientation: horizontal;
+    border-radius: 5px;
+    padding: 10px;
+    spacing: 10px;
+}
+
+element normal.normal {
+    background-color: transparent;
+    text-color: @foreground;
+}
+
+element normal.urgent {
+    background-color: transparent;
+    text-color: @urgent;
+}
+
+element normal.active {
+    background-color: transparent;
+    text-color: @active;
+}
+
+element selected.normal {
+    background-color: @background-alt;
+    text-color: @selected;
+    border: 1px;
+    border-radius: 5px;
+    border-color: @selected;
+}
+
+element selected.urgent {
+    background-color: @background-alt;
+    text-color: @urgent;
+    border: 1px;
+    border-radius: 5px;
+    border-color: @urgent;
+}
+
+element selected.active {
+    background-color: @background-alt;
+    text-color: @active;
+    border: 1px;
+    border-radius: 5px;
+    border-color: @active;
+}
+
+element alternate.normal {
+    background-color: transparent;
+    text-color: @foreground;
+}
+
+element alternate.urgent {
+    background-color: transparent;
+    text-color: @urgent;
+}
+
+element alternate.active {
+    background-color: transparent;
+    text-color: @active;
+}
+
+element-icon {
+    background-color: transparent;
+    text-color: inherit;
+    size: 24px;
+    border: 0px;
+}
+
+element-text {
+    background-color: transparent;
+    text-color: inherit;
+    expand: true;
+    horizontal-align: 0;
+    vertical-align: 0.5;
+    margin: 0px 2.5px 0px 2.5px;
+}
